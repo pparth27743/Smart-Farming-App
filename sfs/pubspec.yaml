@@ -27,6 +27,7 @@ dependencies:
   cloud_firestore: ^0.12.9+4
   provider: ^3.1.0
   flutter_spinkit: "^4.1.2"
+  google_fonts: ^0.3.10
 
 
 dev_dependencies:
