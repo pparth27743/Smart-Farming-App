@@ -1,40 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sfs/screens/authentication/signIn.dart';
 import 'package:sfs/services/authService.dart';
 import 'package:sfs/shared/constant.dart';
-import 'package:sfs/shared/loading.dart';
 
-class SignIn extends StatefulWidget {
-  final Function toggleView;
+
+class ForgotPassword extends StatefulWidget {
+
   final Function showResetPwdView;
 
-  SignIn({this.toggleView, this.showResetPwdView});
+  ForgotPassword({this.showResetPwdView});
 
   @override
   _SignInState createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<ForgotPassword> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-  bool loading = false;
 
   // text field state
   String email = '';
-  String password = '';
   String error = '';
-
+  String msg = '';
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
+    return Scaffold(
             backgroundColor: Colors.green[100],
             appBar: AppBar(
                 backgroundColor: Colors.green[400],
                 //  elevation: 0.0,
-                title: Text("Sign In")),
+                title: Text("Reset Password")),
             body: SingleChildScrollView(
               child: Container(
                   padding: EdgeInsets.symmetric(
@@ -51,7 +48,13 @@ class _SignInState extends State<SignIn> {
                                 text: 'SFS',
                                 style: GoogleFonts.lobster(
                                     fontSize: 100, color: Colors.brown[400]))),
-                        SizedBox(height: 40.0),
+                        SizedBox(height: 30.0),
+                        Text(
+                          msg,
+                          style: TextStyle(color: Colors.blue, fontSize: 20.0),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 10.0),
                         TextFormField(
                           decoration:
                               textInputDecoration.copyWith(hintText: 'Email'),
@@ -62,43 +65,21 @@ class _SignInState extends State<SignIn> {
                           },
                         ),
                         SizedBox(height: 20.0),
-                        TextFormField(
-                          decoration: textInputDecoration.copyWith(
-                              hintText: 'Password'),
-                          validator: (val) => val.length < 6
-                              ? 'Enter a passeaord atleast 6 character long'
-                              : null,
-                          obscureText: true,
-                          onChanged: (val) {
-                            setState(() => password = val);
-                          },
-                        ),
-                        SizedBox(height: 20.0),
                         SizedBox(
                           height: 40,
                           width: double.infinity,
                           child: RaisedButton(
                             color: Colors.green[400],
                             child: Text(
-                              'Sign In',
+                              'Submit',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                setState(() {
-                                  loading = true;
-                                });
-                                dynamic result =
-                                    await _auth.signInWithEmailAndPassword(
-                                        email, password);
-                                if (result == null) {
-                                  setState(() {
-                                    error = 'Wrong Email or Password';
-                                    loading = false;
-                                  });
-                                }
-                              }
+                                setState(() => msg = 'Reset link has been to $email');
+                                dynamic result = await _auth.resetPwd(email);
+                              }   
                             },
                           ),
                         ),
@@ -107,25 +88,13 @@ class _SignInState extends State<SignIn> {
                           error,
                           style: TextStyle(color: Colors.red, fontSize: 14.0),
                         ),
+                        SizedBox(height: 10),
                         FlatButton(
                           child: Text(
-                            'Forgot Password ?',
+                            'Return to Sign In',
                             style: TextStyle(fontSize: 15),
                           ),
                           onPressed: widget.showResetPwdView,
-                        ),
-                        SizedBox(height: 100),
-                        SizedBox(
-                          height: 40,
-                          width: double.infinity,
-                          child: RaisedButton(
-                              color: Colors.green[300],
-                              child: Text(
-                                'Register',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 17),
-                              ),
-                              onPressed: widget.toggleView),
                         ),
                       ],
                     ),

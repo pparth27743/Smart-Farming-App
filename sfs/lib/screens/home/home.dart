@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
-      body: null,
+      body: null //SingleChildScrollView()
     );
   }
 }

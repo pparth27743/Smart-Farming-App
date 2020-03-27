@@ -14,7 +14,6 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
-
   // Sign in with email
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
@@ -50,6 +49,17 @@ class AuthService {
   Future signOut() async {
     try {
       return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //Reset Password
+
+  Future resetPwd(String email) async {
+    try {
+      return  _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
       print(e.toString());
       return null;

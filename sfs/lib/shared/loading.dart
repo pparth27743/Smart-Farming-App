@@ -4,10 +4,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.brown[100],
+      color: Colors.green[100],
       child: Center(
         child: SpinKitCircle(
-          color: Colors.brown,
+          color: Colors.green,
           size: 50.0,
         ),
       ),
