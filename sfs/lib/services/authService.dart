@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sfs/models/user.dart';
+import 'package:sfs/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,9 +35,8 @@ class AuthService {
           email: email, password: password);
       FirebaseUser user = result.user;
 
-      // create a new document for the uset with the uid
-      // await DatabaseService(uid: user.uid)
-      //     .updateUserData('new crew member', '0', 100);
+      // create a blank document for the user with the famerid
+      await DatabaseService(farmerid: user.uid).updateUserData(email);
 
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -44,7 +44,7 @@ class AuthService {
       return null;
     }
   }
-
+  
   //sign out
   Future signOut() async {
     try {
@@ -59,7 +59,7 @@ class AuthService {
 
   Future resetPwd(String email) async {
     try {
-      return  _auth.sendPasswordResetEmail(email: email);
+      return _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
       print(e.toString());
       return null;

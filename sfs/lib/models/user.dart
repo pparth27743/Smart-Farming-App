@@ -1,15 +1,12 @@
 import 'package:sfs/models/farm.dart';
 
+
 class User {
-  final String farmerId;
 
-  User({this.farmerId});
-}
-
-class UserData {
   final String farmerId;
+  final String email;
   List<Farm> farmlst = [];
 
-
-  UserData({this.farmerId});
+  User({this.farmerId, this.email});
+  
 }
