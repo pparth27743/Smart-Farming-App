@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,7 @@ class SensorData extends StatefulWidget {
 
 class _SensorDataState extends State<SensorData> {
   @override
+  
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
     return StreamBuilder<User>(
@@ -37,6 +40,8 @@ class _SensorDataState extends State<SensorData> {
                     //     framIds.add(f.id);
                     // });
 
+                    final DatabaseService _db = DatabaseService(farmerid: user.farmerId);
+
                     return SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
@@ -52,7 +57,8 @@ class _SensorDataState extends State<SensorData> {
                                   ),
                                   trailing: Text('${farm.temp.toString()} °C',
                                       style: TextStyle(
-                                          fontSize: 40, color: Colors.grey)),
+                                          fontSize: 40,
+                                          color: Colors.blueGrey)),
                                   title: FlatButton(
                                       child: Text(
                                         'Temperature',
@@ -76,7 +82,8 @@ class _SensorDataState extends State<SensorData> {
                                   trailing: Text(
                                       '${farm.humidity.toString()} %',
                                       style: TextStyle(
-                                          fontSize: 40, color: Colors.grey)),
+                                          fontSize: 40,
+                                          color: Colors.blueGrey)),
                                   title: FlatButton(
                                       child: Text(
                                         'Humidity',
@@ -100,7 +107,8 @@ class _SensorDataState extends State<SensorData> {
                                   trailing: Text(
                                       '${farm.soilMoisture.toString()} %',
                                       style: TextStyle(
-                                          fontSize: 40, color: Colors.grey)),
+                                          fontSize: 40,
+                                          color: Colors.blueGrey)),
                                   title: FlatButton(
                                       child: Text(
                                         'Soil Moisture',
@@ -123,9 +131,31 @@ class _SensorDataState extends State<SensorData> {
                                         : AssetImage(
                                             'assets/irrigation_off_1.PNG'),
                                   ),
-                                  trailing: Text(pump,
-                                      style: TextStyle(
-                                          fontSize: 40, color: Colors.grey)),
+                                  trailing: FlatButton(
+                                    child: Text(pump,
+                                        style: TextStyle(
+                                            fontSize: 40,
+                                            color: Colors.blueGrey)),
+                                    color: Colors.grey[300],
+
+                                    //  Chang value of the pump and Send new data to database
+                                    onPressed: () {
+                                      
+                                       setState(() {
+                                          Map<String,Object> farmData = {
+                                          'humidity': farm.humidity,
+                                          'temp': farm.temp,
+                                          'soil moisture': farm.soilMoisture,
+                                          'timestamp': Timestamp.now(),
+                                          'rooftop': farm.rooftop,
+                                          'pump': !farm.pump,
+                                        };
+                                        _db.updateFarmData(farmData);
+                                       });
+                                      
+                                      print('tapped');
+                                    },
+                                  ),
                                   title: FlatButton(
                                       child: Text(
                                         'Irrigation Pump',
@@ -147,9 +177,30 @@ class _SensorDataState extends State<SensorData> {
                                         ? AssetImage('assets/open.png')
                                         : AssetImage('assets/close.png'),
                                   ),
-                                  trailing: Text(rooftop,
-                                      style: TextStyle(
-                                          fontSize: 40, color: Colors.grey)),
+                                  trailing: FlatButton(
+                                      child: Text(rooftop,
+                                          style: TextStyle(
+                                              fontSize: 40,
+                                              color: Colors.blueGrey)),
+                                      color: Colors.grey[300],
+                                      onPressed: () {
+                                        
+                                        //  Chang value of the rooftop and Send new data to database
+                                       
+                                         setState(() {
+                                            Map<String,Object> farmData = {
+                                            'humidity': farm.humidity,
+                                            'temp': farm.temp,
+                                            'soil moisture': farm.soilMoisture,
+                                            'timestamp': Timestamp.now(),
+                                            'rooftop': !farm.rooftop,
+                                            'pump': farm.pump,
+                                          };
+
+                                          _db.updateFarmData(farmData);
+                                         });
+                                        
+                                      }),
                                   title: FlatButton(
                                       child: Text(
                                         'Rooftop',

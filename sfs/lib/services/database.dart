@@ -15,6 +15,12 @@ class DatabaseService {
     return await collectionFarmer.document(farmerid).setData({'email': email});
   }
 
+  Future updateFarmData(Map<String, dynamic> data) async {
+    final collectionFarm = collectionFarmer.document(farmerid).collection('farm');
+
+    return await collectionFarmer.document(farmerid).collection('farm').add(data);
+  }
+
   List<Farm> _framDataFromSanpshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Farm(
