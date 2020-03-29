@@ -48,9 +48,7 @@ class HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Center(
-        child: widgetOptions.elementAt(selectedIndex),
-      ),
+      body: widgetOptions.elementAt(selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[

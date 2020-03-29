@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfs/models/farm.dart';
 import 'package:sfs/models/user.dart';
-import 'package:sfs/screens/home/sensordata/sensortile.dart';
 import 'package:sfs/services/database.dart';
 import 'package:sfs/shared/loading.dart';
 
@@ -20,21 +20,151 @@ class _SensorDataState extends State<SensorData> {
         builder: (farmercontext, farmersnapshot) {
           if (farmersnapshot.hasData) {
             user = farmersnapshot.data;
-          
+
             return StreamBuilder<List<Farm>>(
-                stream: DatabaseService(farmerid: user.farmerId).farmData,
+                stream: DatabaseService(farmerid: user.farmerId).latestFarmData,
                 builder: (farmcontext, farmsnapshot) {
-
                   if (farmsnapshot.hasData) {
+                    user.farmlst = farmsnapshot.data;
+                    Farm farm = user.farmlst[0];
 
-                    user.farmlst = farmsnapshot.data; 
-                    List<Farm> farmlst = user.farmlst;  
+                    String pump = farm.pump ? 'On' : 'Off';
+                    String rooftop = farm.rooftop ? 'On' : 'Off';
+
+                    // List<String> framIds = [];
+
+                    // farmlst.forEach((f) {
+                    //     framIds.add(f.id);
+                    // });
 
                     return SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
-                          SenssorTile(),
-                          SenssorTile(),
+                          Card(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 25.0,
+                                    backgroundImage:
+                                        AssetImage('assets/temp.png'),
+                                  ),
+                                  trailing: Text('${farm.temp.toString()} °C',
+                                      style: TextStyle(
+                                          fontSize: 40, color: Colors.grey)),
+                                  title: FlatButton(
+                                      child: Text(
+                                        'Temperature',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      onPressed: () {}),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Card(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 25.0,
+                                    backgroundImage:
+                                        AssetImage('assets/humidity.png'),
+                                  ),
+                                  trailing: Text(
+                                      '${farm.humidity.toString()} %',
+                                      style: TextStyle(
+                                          fontSize: 40, color: Colors.grey)),
+                                  title: FlatButton(
+                                      child: Text(
+                                        'Humidity',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      onPressed: () {}),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Card(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 25.0,
+                                    backgroundImage:
+                                        AssetImage('assets/soil_moisture.png'),
+                                  ),
+                                  trailing: Text(
+                                      '${farm.soilMoisture.toString()} %',
+                                      style: TextStyle(
+                                          fontSize: 40, color: Colors.grey)),
+                                  title: FlatButton(
+                                      child: Text(
+                                        'Soil Moisture',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      onPressed: () {}),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Card(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 25.0,
+                                    backgroundImage: farm.pump
+                                        ? AssetImage('assets/irrigation_on.gif')
+                                        : AssetImage(
+                                            'assets/irrigation_off_1.PNG'),
+                                  ),
+                                  trailing: Text(pump,
+                                      style: TextStyle(
+                                          fontSize: 40, color: Colors.grey)),
+                                  title: FlatButton(
+                                      child: Text(
+                                        'Irrigation Pump',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      onPressed: () {}),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Card(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 25.0,
+                                    backgroundImage: farm.rooftop
+                                        ? AssetImage('assets/open.png')
+                                        : AssetImage('assets/close.png'),
+                                  ),
+                                  trailing: Text(rooftop,
+                                      style: TextStyle(
+                                          fontSize: 40, color: Colors.grey)),
+                                  title: FlatButton(
+                                      child: Text(
+                                        'Rooftop',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      onPressed: () {}),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Center(child: Text('Last Updated at')),
+                          Center(child: Text('${farm.timestamp.toDate()}'))
                         ],
                       ),
                     );

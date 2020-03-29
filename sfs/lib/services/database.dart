@@ -3,7 +3,6 @@ import 'package:sfs/models/farm.dart';
 import 'package:sfs/models/user.dart';
 
 class DatabaseService {
-  
   final String farmerid;
 
   DatabaseService({this.farmerid});
@@ -17,28 +16,37 @@ class DatabaseService {
   }
 
   List<Farm> _framDataFromSanpshot(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc) {      
-      //print(doc.documentID);
+    return snapshot.documents.map((doc) {
       return Farm(
-          farmerId: farmerid ?? null,
-          farmId:  doc.documentID ?? null,
-          humidity: doc.data['humidity'] ?? -999,
-          soil_moisture: doc.data['soil mositure'] ?? -999,
-          temp: doc.data['temp'] ?? -999,
-          pump: doc.data['pump'] ?? false,
-          rooftop: doc.data['rooftop'] ?? false);
+          farmerId: farmerid,
+          id: doc.documentID,
+          humidity: doc.data['humidity'],
+          soilMoisture: doc.data['soil moisture'],
+          temp: doc.data['temp'],
+          pump: doc.data['pump'],
+          rooftop: doc.data['rooftop'],
+          timestamp: doc.data['timestamp']);
     }).toList();
+  }
+
+  Stream<List<Farm>> get allFarmData {
+    final collectionFarm =
+        collectionFarmer.document(farmerid).collection('farm');
+    return collectionFarm.snapshots().map(_framDataFromSanpshot);
+  }
+
+  Stream<List<Farm>> get latestFarmData {
+    final collectionFarm =
+        collectionFarmer.document(farmerid).collection('farm');
+    return collectionFarm
+        .orderBy('timestamp', descending: true)
+        .limit(1)
+        .snapshots()
+        .map(_framDataFromSanpshot);
   }
 
   User _farmerDataFromSnapshot(DocumentSnapshot snapshot) {
     return User(farmerId: farmerid, email: snapshot.data['email']);
-  }
-
-
-  Stream<List<Farm>> get farmData {
-    
-    final collectionFarm = collectionFarmer.document(farmerid).collection('farm');
-    return collectionFarm.snapshots().map(_framDataFromSanpshot);
   }
 
   Stream<User> get userData {

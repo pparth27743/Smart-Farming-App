@@ -1,18 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Farm {
   final String farmerId;
-  final String farmId;
+  final String id;
   final int humidity;
-  final int soil_moisture;
+  final int soilMoisture;
   final int temp;
   final bool pump;
   final bool rooftop;
+  final Timestamp timestamp;
 
   Farm(
       {this.farmerId,
-      this.farmId,
+      this.id,
       this.humidity,
-      this.soil_moisture,
+      this.soilMoisture,
       this.temp,
       this.pump,
-      this.rooftop});
+      this.rooftop,
+      this.timestamp});
 }
