@@ -1,6 +1,6 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sfs/models/farm.dart';
 import 'package:sfs/models/user.dart';
@@ -8,13 +8,17 @@ import 'package:sfs/services/database.dart';
 import 'package:sfs/shared/loading.dart';
 
 class SensorData extends StatefulWidget {
+  //
+  // final Function visualizer;
+
+  // SensorData(this.visualizer);
+
   @override
   _SensorDataState createState() => _SensorDataState();
 }
 
 class _SensorDataState extends State<SensorData> {
   @override
-  
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
     return StreamBuilder<User>(
@@ -32,6 +36,9 @@ class _SensorDataState extends State<SensorData> {
 
                     String pump = farm.pump ? 'On' : 'Off';
                     String rooftop = farm.rooftop ? 'On' : 'Off';
+                    String updatedTime =
+                        DateFormat('hh:mm:ss aaa EEEE, d MMM, yyyy')
+                            .format(farm.timestamp.toDate());
 
                     // List<String> framIds = [];
 
@@ -39,7 +46,8 @@ class _SensorDataState extends State<SensorData> {
                     //     framIds.add(f.id);
                     // });
 
-                    final DatabaseService _db = DatabaseService(farmerid: user.farmerId);
+                    final DatabaseService _db =
+                        DatabaseService(farmerid: user.farmerId);
 
                     return SingleChildScrollView(
                       child: Column(
@@ -59,11 +67,13 @@ class _SensorDataState extends State<SensorData> {
                                           fontSize: 40,
                                           color: Colors.blueGrey)),
                                   title: FlatButton(
-                                      child: Text(
-                                        'Temperature',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      onPressed: () {}),
+                                    child: Text(
+                                      'Temperature',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    onPressed: () {},
+                                    //onPressed: () => (widget.visualizer('temperature')),
+                                  ),
                                 ),
                               ],
                             ),
@@ -139,9 +149,8 @@ class _SensorDataState extends State<SensorData> {
 
                                     //  Chang value of the pump and Send new data to database
                                     onPressed: () {
-                                      
-                                       setState(() {
-                                          Map<String,Object> farmData = {
+                                      setState(() {
+                                        Map<String, Object> farmData = {
                                           'humidity': farm.humidity,
                                           'temp': farm.temp,
                                           'soil moisture': farm.soilMoisture,
@@ -150,8 +159,8 @@ class _SensorDataState extends State<SensorData> {
                                           'pump': !farm.pump,
                                         };
                                         _db.updateFarmData(farmData);
-                                       });
-                                      
+                                      });
+
                                       print('tapped');
                                     },
                                   ),
@@ -183,11 +192,10 @@ class _SensorDataState extends State<SensorData> {
                                               color: Colors.blueGrey)),
                                       color: Colors.grey[300],
                                       onPressed: () {
-                                        
                                         //  Chang value of the rooftop and Send new data to database
-                                       
-                                         setState(() {
-                                            Map<String,Object> farmData = {
+
+                                        setState(() {
+                                          Map<String, Object> farmData = {
                                             'humidity': farm.humidity,
                                             'temp': farm.temp,
                                             'soil moisture': farm.soilMoisture,
@@ -197,8 +205,7 @@ class _SensorDataState extends State<SensorData> {
                                           };
 
                                           _db.updateFarmData(farmData);
-                                         });
-                                        
+                                        });
                                       }),
                                   title: FlatButton(
                                       child: Text(
@@ -214,7 +221,7 @@ class _SensorDataState extends State<SensorData> {
                             height: 20,
                           ),
                           Center(child: Text('Last Updated at')),
-                          Center(child: Text('${farm.timestamp.toDate()}'))
+                          Center(child: Text(updatedTime))
                         ],
                       ),
                     );

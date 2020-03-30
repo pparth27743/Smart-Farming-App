@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sfs/screens/home/account.dart';
+import 'package:sfs/screens/home/prediction.dart';
 import 'package:sfs/screens/home/sensordata/sensordata.dart';
 import 'package:sfs/screens/home/vision.dart';
+import 'package:sfs/screens/home/visualize/visualize.dart';
 import 'package:sfs/services/authService.dart';
-import 'package:sfs/services/database.dart';
 
 class Home extends StatefulWidget {
-  @override
-  HomeState createState() => HomeState();
-}
+  //
+  String page;
+  int selectedIndex;
+  String sensorData;
+  final Map<String, int> pageNameToIndex = {
+    'prediction': 0,
+    'vision': 1,
+    'homepage': 2,
+    'visualize': 3,
+    'profile': 4
+  };
 
-class HomeState extends State<Home> {
-  final AuthService _auth = AuthService();
-  final DatabaseService _db = DatabaseService();
+  var widgetOptions;
 
-  void callfun (){
-
+  Home(this.page, {this.sensorData}) {
+    selectedIndex = pageNameToIndex[page];
+    widgetOptions = [
+      HomePage(),
+      Vision(),
+      SensorData(),
+      Visualize(sensorData),
+      Account(),
+    ];
   }
 
-  int selectedIndex = 2;
-  final widgetOptions = [
-    Text('Control'),
-    Vision(),
-    SensorData(),
-    Text('Visualize'),
-    Text('Profile')
-  ];
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  //
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +62,12 @@ class HomeState extends State<Home> {
           ),
         ],
       ),
-      body: widgetOptions.elementAt(selectedIndex),
+      body: widget.widgetOptions.elementAt(widget.selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items:  [
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.security), title: Text('Contol ')),
+              icon: Icon(Icons.show_chart), title: Text('Predition')),
           BottomNavigationBarItem(
               icon: Icon(Icons.visibility), title: Text('Vision')),
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
@@ -63,7 +76,7 @@ class HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle), title: Text('Profile')),
         ],
-        currentIndex: selectedIndex,
+        currentIndex: widget.selectedIndex,
         fixedColor: Colors.green[600],
         backgroundColor: Colors.green[100],
         onTap: onItemTapped,
@@ -73,24 +86,7 @@ class HomeState extends State<Home> {
 
   void onItemTapped(int index) {
     setState(() {
-      selectedIndex = index;
+      widget.selectedIndex = index;
     });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

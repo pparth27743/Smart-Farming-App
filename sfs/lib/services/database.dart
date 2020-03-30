@@ -38,7 +38,7 @@ class DatabaseService {
   Stream<List<Farm>> get allFarmData {
     final collectionFarm =
         collectionFarmer.document(farmerid).collection('farm');
-    return collectionFarm.snapshots().map(_framDataFromSanpshot);
+    return collectionFarm.orderBy('timestamp', descending: true).snapshots().map(_framDataFromSanpshot);
   }
 
   Stream<List<Farm>> get latestFarmData {
