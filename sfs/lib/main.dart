@@ -19,139 +19,48 @@ class MyApp extends StatelessWidget {
 
 
 
-
-
-
-
 // import 'package:flutter/material.dart';
-// import 'package:flutter_sparkline/flutter_sparkline.dart';
-// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-// import 'package:flutter_circular_chart/flutter_circular_chart.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:sfs/stubPage.dart';
 
+// void main() => runApp(App());
 
-
-// class Account extends StatelessWidget {
-//   // This widget is the root of your application.
+// class App extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primaryColor: Color(0xffff6101),
-//       ),
-//       home: MyHomePage(title: 'Sales Dashboard 2018'),
+//       title: 'Flutter Navigation',
+//       home: MainPage(),
 //     );
 //   }
 // }
 
-// class MyHomePage extends StatefulWidget {
-//   MyHomePage({Key key, this.title}) : super(key: key);
+// class MainPage extends StatelessWidget {
 
-//   final String title;
-
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
-//   var data1 = [0.0,-2.0,3.5,-2.0,0.5,0.7,0.8,1.0,2.0,3.0,3.2];
-
-//   List<CircularStackEntry> circularData = <CircularStackEntry>[
-//     new CircularStackEntry(
-//       <CircularSegmentEntry>[
-//         new CircularSegmentEntry(700.0, Color(0xff4285F4), rankKey: 'Q1'),
-//         new CircularSegmentEntry(1000.0, Color(0xfff3af00), rankKey: 'Q2'),
-//         new CircularSegmentEntry(1800.0, Color(0xffec3337), rankKey: 'Q3'),
-//         new CircularSegmentEntry(1000.0, Color(0xff40b24b), rankKey: 'Q4'),
-//       ],
-//       rankKey: 'Quarterly Profits',
-//     ),
-//   ];
-
-
-
-//   Material lineChart(String title, String priceVal,String subtitle) {
-//     return Material(
-//       color: Colors.white,
-//       elevation: 15.0,
-//       borderRadius: BorderRadius.circular(20.0),
-//       shadowColor: Color(0x802196F3),
-//       child: Center(
-//         child: Padding(
-//           padding: EdgeInsets.all(0.0),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: <Widget>[
-//               Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: <Widget>[
-//                   Padding(
-//                     padding: EdgeInsets.all(0.0),
-//                     child: Text(title, style: TextStyle(
-//                       fontSize: 20.0,
-//                       color: Colors.blueAccent,
-//                     ),),
-//                   ),
-
-//                   Padding(
-//                     padding: EdgeInsets.all(1.0),
-//                     child: Text(priceVal, style: TextStyle(
-//                       fontSize: 30.0,
-//                     ),),
-//                   ),
-//                   Padding(
-//                     padding: EdgeInsets.all(1.0),
-//                     child: Text(subtitle, style: TextStyle(
-//                       fontSize: 20.0,
-//                       color: Colors.blueGrey,
-//                     ),),
-//                   ),
-
-//                   Padding(
-//                     padding: EdgeInsets.all(1.0),
-//                     child: new Sparkline(
-//                       data: data,
-//                       lineColor: Color(0xffff6101),
-//                       pointsMode: PointsMode.all,
-//                       pointSize: 8.0,
-//                     ),
-//                   ),
-
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
+//   Future navigateToSubPage(context) async {
+//     Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
 //   }
-
-
-
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       body:Container(
-//           color:Colors.green[100],
-//           child:StaggeredGridView.count(
-//             crossAxisCount: 4,
-//            crossAxisSpacing: 12.0,
-//           mainAxisSpacing: 12.0,
-//         children: <Widget>[
-//           Padding(
-//             padding: const EdgeInsets.all(10.0),
-//             child: lineChart("Sales by Month","421.3M","+12.9% of target"),
-//           ),
-
-//         ],
-//         staggeredTiles: [
-//           StaggeredTile.extent(4, 250.0),
-//         ],
+//       appBar: AppBar(
+//         title: Text('Main Page'),
 //       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             Text('Click button to move to SubPage'),
+//             RaisedButton(
+//               textColor: Colors.white,
+//               color: Colors.blue,
+//               child: Text('Go to SubPage'),
+//               onPressed: () {
+//                 navigateToSubPage(context);
+//               },
+//             )
+//           ],
+//         ),
 //       ),
 //     );
 //   }

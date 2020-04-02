@@ -4,14 +4,14 @@ import 'package:sfs/screens/home/account.dart';
 import 'package:sfs/screens/home/prediction.dart';
 import 'package:sfs/screens/home/sensordata/sensordata.dart';
 import 'package:sfs/screens/home/vision.dart';
-import 'package:sfs/screens/home/visualize/visualize.dart';
+import 'package:sfs/screens/home/visualize/pieChart.dart';
+import 'package:sfs/screens/home/visualize/visualizePage.dart';
 import 'package:sfs/services/authService.dart';
 
 class Home extends StatefulWidget {
   //
   String page;
   int selectedIndex;
-  String sensorData;
   final Map<String, int> pageNameToIndex = {
     'prediction': 0,
     'vision': 1,
@@ -22,13 +22,13 @@ class Home extends StatefulWidget {
 
   var widgetOptions;
 
-  Home(this.page, {this.sensorData}) {
+  Home(this.page) {
     selectedIndex = pageNameToIndex[page];
     widgetOptions = [
-      HomePage(),
+      Prediction(),
       Vision(),
       SensorData(),
-      Visualize(sensorData),
+      VisualizePage(),
       Account(),
     ];
   }
@@ -54,8 +54,14 @@ class _HomeState extends State<Home> {
         elevation: 0.0,
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sign Out'),
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+            ),
+            label: Text(
+              'Sign Out',
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
             onPressed: () async {
               await _auth.signOut();
             },

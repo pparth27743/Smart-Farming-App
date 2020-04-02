@@ -3,6 +3,7 @@ import 'package:sfs/screens/authentication/forgotPwd.dart';
 import 'package:sfs/screens/authentication/register.dart';
 import 'package:sfs/screens/authentication/signIn.dart';
 
+
 class Authenticate extends StatefulWidget {
   @override
   _AuthenticateState createState() => _AuthenticateState();

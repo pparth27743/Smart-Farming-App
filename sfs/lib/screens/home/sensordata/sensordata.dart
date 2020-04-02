@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sfs/models/farm.dart';
 import 'package:sfs/models/user.dart';
+import 'package:sfs/screens/home/visualize/visualize.dart';
+import 'package:sfs/services/authService.dart';
 import 'package:sfs/services/database.dart';
 import 'package:sfs/shared/loading.dart';
 
@@ -18,6 +20,18 @@ class SensorData extends StatefulWidget {
 }
 
 class _SensorDataState extends State<SensorData> {
+  Future navigateToSubPage(context, String visualizeDataOf) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return StreamProvider<User>.value(
+          value: AuthService().user,
+          child: Visualize(visualizeDataOf),
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
@@ -71,7 +85,9 @@ class _SensorDataState extends State<SensorData> {
                                       'Temperature',
                                       style: TextStyle(fontSize: 20),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      navigateToSubPage(context, 'temperature');
+                                    },
                                     //onPressed: () => (widget.visualizer('temperature')),
                                   ),
                                 ),
@@ -98,7 +114,9 @@ class _SensorDataState extends State<SensorData> {
                                         'Humidity',
                                         style: TextStyle(fontSize: 20),
                                       ),
-                                      onPressed: () {}),
+                                      onPressed: () {
+                                        navigateToSubPage(context, 'humidity');
+                                      }),
                                 ),
                               ],
                             ),
@@ -123,7 +141,10 @@ class _SensorDataState extends State<SensorData> {
                                         'Soil Moisture',
                                         style: TextStyle(fontSize: 20),
                                       ),
-                                      onPressed: () {}),
+                                      onPressed: () {
+                                        navigateToSubPage(
+                                            context, 'soilMoisture');
+                                      }),
                                 ),
                               ],
                             ),
@@ -160,7 +181,6 @@ class _SensorDataState extends State<SensorData> {
                                         };
                                         _db.updateFarmData(farmData);
                                       });
-
                                       print('tapped');
                                     },
                                   ),
@@ -169,7 +189,9 @@ class _SensorDataState extends State<SensorData> {
                                         'Irrigation Pump',
                                         style: TextStyle(fontSize: 20),
                                       ),
-                                      onPressed: () {}),
+                                      onPressed: () {
+                                        navigateToSubPage(context, 'pump_pie');
+                                      }),
                                 ),
                               ],
                             ),
@@ -212,7 +234,9 @@ class _SensorDataState extends State<SensorData> {
                                         'Rooftop',
                                         style: TextStyle(fontSize: 20),
                                       ),
-                                      onPressed: () {}),
+                                      onPressed: () {
+                                        navigateToSubPage(context, 'rooftop_pie');
+                                      }),
                                 ),
                               ],
                             ),

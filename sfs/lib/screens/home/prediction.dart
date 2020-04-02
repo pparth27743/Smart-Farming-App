@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class HomePage extends StatefulWidget {
+class Prediction extends StatefulWidget {
   final Widget child;
 
-  HomePage({Key key, this.child}) : super(key: key);
+  Prediction({Key key, this.child}) : super(key: key);
 
-  _HomePageState createState() => _HomePageState();
+  _PredictionState createState() => _PredictionState();
 }
 
-class _HomePageState extends State<HomePage> {  
+class _PredictionState extends State<Prediction> {  
 
   List<charts.Series<Pollution, String>> _seriesData;
   List<charts.Series<Task, String>> _seriesPieData;
@@ -313,121 +313,5 @@ class Sales {
 
 
 
-
-
-
-
-
-
-
-
-
-
-// import 'dart:io';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:charts_flutter/flutter.dart' as charts;
-
-// class LineChart extends StatefulWidget {
-//   final List<int> temps = [1, 2, 3, 4, 5];
-//   List<DateTime > time = [
-//     new Timestamp(1585553059, 462230000).toDate(),
-//     new Timestamp(1585553060, 467396000).toDate(),
-//     new Timestamp(1585553061, 468151000).toDate(),
-//     new Timestamp(1585553062, 468939000).toDate(),
-//     new Timestamp(1585553063, 469784000).toDate(),
-//   ];
-
-//   _LineChartState createState() => _LineChartState();
-// }
-
-// class _LineChartState extends State<LineChart> {
-//   String title = " Temp";
-//   String yParameter = "Temp";
-
-//   List<charts.Series<LineChartVal, DateTime>> _seriesLineData;
-
-//   _generateData() {
-//     //sleep(const Duration(:1));
-
-//     var dataPoint = [];
-
-//     for (int i = 0; i < 5; i++) {
-//       dataPoint.add(new LineChartVal(widget.time[i], widget.temps[i]));
-//     }
-
-//     _seriesLineData.add(
-//       charts.Series(
-//         colorFn: (__, _) => charts.ColorUtil.fromDartColor(Colors.blueGrey),
-//         id: 'Air Pollution',
-//         data: dataPoint,
-//         domainFn: (LineChartVal lineChartVal, _) => lineChartVal.xVal,
-//         measureFn: (LineChartVal lineChartVal, _) => lineChartVal.yVal,
-//       ),
-//     );
-//   }
-
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     _seriesLineData = List<charts.Series<LineChartVal, DateTime>>();
-//     _generateData();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTabController(
-//       length: 1,
-//       child: Scaffold(
-//         body: TabBarView(
-//           children: [
-//             Padding(
-//               padding: EdgeInsets.all(8.0),
-//               child: Container(
-//                 child: Center(
-//                   child: Column(
-//                     children: <Widget>[
-//                       Text(
-//                         title,
-//                         style: TextStyle(
-//                             fontSize: 24.0, fontWeight: FontWeight.bold),
-//                       ),
-//                       Expanded(
-//                         child: charts.LineChart(_seriesLineData,
-//                             defaultRenderer: new charts.LineRendererConfig(
-//                                 includeArea: true, stacked: true),
-//                             behaviors: [
-//                               new charts.ChartTitle('Time',
-//                                   behaviorPosition:
-//                                       charts.BehaviorPosition.bottom,
-//                                   titleOutsideJustification: charts
-//                                       .OutsideJustification.middleDrawArea),
-//                               new charts.ChartTitle(yParameter,
-//                                   behaviorPosition:
-//                                       charts.BehaviorPosition.start,
-//                                   titleOutsideJustification: charts
-//                                       .OutsideJustification.middleDrawArea),
-//                             ]),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class LineChartVal {
-//   DateTime xVal;
-//   int yVal;
-
-//   LineChartVal(this.xVal, this.yVal);
-// }
 
 
