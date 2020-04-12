@@ -128,7 +128,7 @@ packages:
     source: hosted
     version: "0.1.1+2"
   firebase_ml_vision:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_ml_vision
       url: "https://pub.dartlang.org"
@@ -206,7 +206,7 @@ packages:
     source: hosted
     version: "0.3.10"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -283,7 +283,7 @@ packages:
     source: hosted
     version: "1.6.4"
   path_provider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"

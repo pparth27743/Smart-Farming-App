@@ -1,10 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
+
+const baseUrl = "http://192.168.43.114:5000";
+
+
+bool isPending = false;
 
 class Vision extends StatelessWidget {
   @override
@@ -43,6 +50,8 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   @override
   Widget build(BuildContext context) {
+
+if(isPending){}
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -51,7 +60,9 @@ class _ImageCaptureState extends State<ImageCapture> {
               SizedBox(width: 30),
               IconButton(
                 icon: Icon(Icons.photo_camera),
-                onPressed: () => _pickImage(ImageSource.camera),
+                onPressed: () async {
+                  _pickImage(ImageSource.camera);
+                },
               ),
               SizedBox(width: 50),
               IconButton(
@@ -97,13 +108,16 @@ class Uploader extends StatefulWidget {
 }
 
 class _UploaderState extends State<Uploader> {
+  String fileName;
+
   final FirebaseStorage _storage = FirebaseStorage(
       storageBucket: 'gs://smart-farm-system-94f3f.appspot.com');
 
   StorageUploadTask _uploadTask;
 
-  void _startUpload() {
-    String filepath = 'images/${DateTime.now()}.png';
+  void _startUpload(String name) {
+    fileName = name;
+    String filepath = 'images/${name}.jpg';
     setState(() {
       _uploadTask = _storage.ref().child(filepath).putFile(widget.file);
     });
@@ -122,58 +136,46 @@ class _UploaderState extends State<Uploader> {
 
           return Column(children: [
             if (_uploadTask.isComplete)
-              Row(
-                children: <Widget>[
-                  SizedBox(width: 20),
-                  Text(
-                    "Done Uplaoding",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.blueGrey,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(width: 50),
-                  FlatButton(
-                    child: Text(
-                      "Disease Scan",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.blueGrey[900],
-                          fontWeight: FontWeight.bold),
-                    ),
-                    color: Colors.green[300],
-                    onPressed: () {},
-                  )
-                ],
+              Center(
+                child: Text(
+                  fileName,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            SizedBox(height: 10),
-            if (_uploadTask.isPaused)
-              FlatButton(
-                child: Icon(Icons.play_arrow),
-                onPressed: _uploadTask.resume,
-              ),
-            if (_uploadTask.isInProgress)
-              FlatButton(
-                  child: Icon(Icons.pause), onPressed: _uploadTask.pause),
-            LinearProgressIndicator(value: progressPercent),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              '${(progressPercent * 100).toStringAsFixed(2)} %',
-              style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.bold),
-            ),
           ]);
         },
       );
     } else {
-      return FlatButton.icon(
-          onPressed: _startUpload,
-          icon: Icon(Icons.cloud_upload),
-          label: Text('Upload to Firebase'));
+      return Center(
+          child: FlatButton(
+        child: Text(
+          "Disease Scan",
+          style: TextStyle(
+              fontSize: 20,
+              color: Colors.blueGrey[900],
+              fontWeight: FontWeight.bold),
+        ),
+        color: Colors.green[300],
+        onPressed: () async {
+          final bytes = widget.file.readAsBytesSync();
+          // print(bytes.toString().substring(0, 100));
+          String img64 = base64Encode(bytes);
+          // print(img64.substring(0, 100));
+
+          try {
+            var response = await http.post(baseUrl, body: img64);
+            // print('Response status: ${response.statusCode}');
+            // print('Response body: ${json.decode(response.body)['prediction']}');
+            _startUpload(json.decode(response.body)['prediction']);
+          } catch (e) {
+            print('There is some Problem');
+            _startUpload(DateTime.now().toString());
+          }
+        },
+      ));
     }
   }
 }
