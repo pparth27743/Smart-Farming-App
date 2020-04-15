@@ -11,14 +11,26 @@ class DatabaseService {
   final collectionFarmer = Firestore.instance.collection('farmers');
 
   // Set data
-  Future updateUserData(String email) async {
-    return await collectionFarmer.document(farmerid).setData({'email': email});
+  Future updateUserData(User usr) async {
+    return await collectionFarmer.document(farmerid).setData({
+      'email': usr.email,
+      'fullName': usr.fullName,
+      'day': usr.day,
+      'month': usr.month,
+      'year': usr.year,
+      'gender': usr.gender,
+      'isFramAvailable': usr.isFramAvailable 
+    });
   }
 
   Future updateFarmData(Map<String, dynamic> data) async {
-    final collectionFarm = collectionFarmer.document(farmerid).collection('farm');
+    final collectionFarm =
+        collectionFarmer.document(farmerid).collection('farm');
 
-    return await collectionFarmer.document(farmerid).collection('farm').add(data);
+    return await collectionFarmer
+        .document(farmerid)
+        .collection('farm')
+        .add(data);
   }
 
   List<Farm> _framDataFromSanpshot(QuerySnapshot snapshot) {
@@ -38,7 +50,10 @@ class DatabaseService {
   Stream<List<Farm>> get allFarmData {
     final collectionFarm =
         collectionFarmer.document(farmerid).collection('farm');
-    return collectionFarm.orderBy('timestamp', descending: true).snapshots().map(_framDataFromSanpshot);
+    return collectionFarm
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map(_framDataFromSanpshot);
   }
 
   Stream<List<Farm>> get latestFarmData {
@@ -52,7 +67,16 @@ class DatabaseService {
   }
 
   User _farmerDataFromSnapshot(DocumentSnapshot snapshot) {
-    return User(farmerId: farmerid, email: snapshot.data['email']);
+    return User(
+      farmerId: farmerid,
+      email: snapshot.data['email'],
+      fullName: snapshot.data['fullName'],
+      day: snapshot.data['day'],
+      month: snapshot.data['month'],
+      year: snapshot.data['year'],
+      gender: snapshot.data['gender'],
+      isFramAvailable: snapshot.data['isFramAvailable']
+    );
   }
 
   Stream<User> get userData {

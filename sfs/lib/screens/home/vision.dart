@@ -7,11 +7,14 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:sfs/models/user.dart';
+import 'package:sfs/services/database.dart';
+import 'package:sfs/shared/loading.dart';
 
 const baseUrl = "http://192.168.43.114:5000";
 
-
-bool isPending = false;
+User user;
 
 class Vision extends StatelessWidget {
   @override
@@ -50,51 +53,96 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   @override
   Widget build(BuildContext context) {
+    user = Provider.of<User>(context);
+    return StreamBuilder<User>(
+        stream: DatabaseService(farmerid: user.farmerId).userData,
+        builder: (farmercontext, farmersnapshot) {
+          if (farmersnapshot.hasData) {
+            user = farmersnapshot.data;
 
-if(isPending){}
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              SizedBox(width: 30),
-              IconButton(
-                icon: Icon(Icons.photo_camera),
-                onPressed: () async {
-                  _pickImage(ImageSource.camera);
-                },
-              ),
-              SizedBox(width: 50),
-              IconButton(
-                icon: Icon(Icons.photo_library),
-                onPressed: () => _pickImage(ImageSource.gallery),
-              ),
-              if (_imageFile != null) ...[
-                SizedBox(width: 40),
-                Row(children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.crop),
-                    onPressed: _cropImage,
+            return SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width: 30),
+                      IconButton(
+                        icon: Icon(Icons.photo_camera),
+                        onPressed: () async {
+                          _pickImage(ImageSource.camera);
+                        },
+                      ),
+                      SizedBox(width: 50),
+                      IconButton(
+                        icon: Icon(Icons.photo_library),
+                        onPressed: () => _pickImage(ImageSource.gallery),
+                      ),
+                      if (_imageFile != null) ...[
+                        SizedBox(width: 40),
+                        Row(children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.crop),
+                            onPressed: _cropImage,
+                          ),
+                          SizedBox(width: 50),
+                          IconButton(
+                            icon: Icon(Icons.refresh),
+                            onPressed: _clear,
+                          ),
+                        ]),
+                      ]
+                    ],
                   ),
-                  SizedBox(width: 50),
-                  IconButton(
-                    icon: Icon(Icons.refresh),
-                    onPressed: _clear,
-                  ),
-                ]),
-              ]
-            ],
-          ),
-          if (_imageFile != null) ...[
-            Uploader(file: _imageFile),
-            SizedBox(
-              height: 10,
-            ),
-            Image.file(_imageFile),
-          ],
-        ],
-      ),
-    );
+                  if (_imageFile == null) ...[
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 50,
+                      ),
+                      height: 250,
+                      child: Center(
+                        child: Text(
+                          'Disease Detection based on leaves can be done here!',
+                          style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 50,
+                      ),
+                      height: 250,
+                      child: Center(
+                        child: Text(
+                          'Please Capture leaf image or choose one form gallery',
+                          style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  ],
+                  if (_imageFile != null) ...[
+                    Uploader(file: _imageFile),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Image.file(_imageFile),
+                  ],
+                ],
+              ),
+            );
+          } else {
+            return Loading();
+          }
+        });
   }
 }
 
@@ -117,7 +165,7 @@ class _UploaderState extends State<Uploader> {
 
   void _startUpload(String name) {
     fileName = name;
-    String filepath = 'images/${name}.jpg';
+    String filepath = 'farmers/${user.farmerId}/Leaves/${name}.jpg';
     setState(() {
       _uploadTask = _storage.ref().child(filepath).putFile(widget.file);
     });

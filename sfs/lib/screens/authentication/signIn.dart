@@ -24,7 +24,6 @@ class _SignInState extends State<SignIn> {
   String password = '';
   String error = '';
 
-
   @override
   Widget build(BuildContext context) {
     return loading
@@ -102,11 +101,13 @@ class _SignInState extends State<SignIn> {
                             },
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Text(
-                          error,
-                          style: TextStyle(color: Colors.red, fontSize: 14.0),
-                        ),
+                        if (error.length != 0) ...[
+                          SizedBox(height: 10),
+                          Text(
+                            error,
+                            style: TextStyle(color: Colors.red, fontSize: 14.0),
+                          ),
+                        ],
                         FlatButton(
                           child: Text(
                             'Forgot Password ?',
@@ -114,7 +115,11 @@ class _SignInState extends State<SignIn> {
                           ),
                           onPressed: widget.showResetPwdView,
                         ),
-                        SizedBox(height: 100),
+                        SizedBox(
+                          height: 30,
+                          child: Text(
+                              '---------------------------------  OR  ---------------------------------'),
+                        ),
                         SizedBox(
                           height: 40,
                           width: double.infinity,
@@ -123,7 +128,7 @@ class _SignInState extends State<SignIn> {
                               child: Text(
                                 'Register',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 17),
+                                    color: Colors.white, fontSize: 20),
                               ),
                               onPressed: widget.toggleView),
                         ),

@@ -9,12 +9,17 @@ import 'package:sfs/services/authService.dart';
 import 'package:sfs/services/database.dart';
 import 'package:sfs/shared/loading.dart';
 
+
+
+
+
 class Visualize extends StatelessWidget {
   //
   final String visualizeDataOf;
+  int countDataPoint;
   final AuthService _auth = AuthService();
 
-  Visualize(this.visualizeDataOf);
+  Visualize({this.visualizeDataOf, this.countDataPoint});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +65,10 @@ class Visualize extends StatelessWidget {
                       if (farmsnapshot.hasData) {
                         user.farmlst = farmsnapshot.data;
 
-                        int countDataPoint = user.farmlst.length;
+                        int totalLength = user.farmlst.length;
+                        if(totalLength <= countDataPoint){
+                          countDataPoint = totalLength;
+                        }
                         List<int> lstTemp = new List<int>();
                         List<int> lstHumidity = new List<int>();
                         List<int> lstSoilMoisture = new List<int>();
@@ -68,7 +76,9 @@ class Visualize extends StatelessWidget {
                         List<int> lstRooftop = new List<int>();
                         List<DateTime> lstTime = new List<DateTime>();
 
-                        for (int i = 0; i < 20; i++) {
+
+
+                        for (int i = 0; i < countDataPoint; i++) {
                           lstTemp.add(user.farmlst[i].temp);
                           lstHumidity.add(user.farmlst[i].humidity);
                           lstSoilMoisture.add(user.farmlst[i].soilMoisture);
@@ -80,7 +90,7 @@ class Visualize extends StatelessWidget {
                         Map<String, int> pumpDict = {'On': 0, 'Off': 0};
                         Map<String, int> rooftopDict = {'On': 0, 'Off': 0};
 
-                        for (int i = 0; i < 20; i++) {
+                        for (int i = 0; i < countDataPoint; i++) {
                           if (lstPump[i] == 1)
                             pumpDict.update(
                                 'On', (dynamic val) => pumpDict['On'] + 1);
@@ -97,9 +107,12 @@ class Visualize extends StatelessWidget {
                         }
 
                         switch (visualizeDataOf) {
+
+
+                          
                           case "temperature":
                             return PointsLineChart(
-                              title: 'Last 20 Temperature Values',
+                              title: 'Last ${countDataPoint} Temperature Values',
                               yParameter: 'Temperature °C',
                               xValues: lstTemp,
                               yValues: lstTime,
@@ -109,7 +122,7 @@ class Visualize extends StatelessWidget {
 
                           case 'humidity':
                             return PointsLineChart(
-                              title: 'Last 20 Humidity Values',
+                              title: 'Last ${countDataPoint} Humidity Values',
                               yParameter: 'Humidity %',
                               xValues: lstHumidity,
                               yValues: lstTime,
@@ -119,7 +132,7 @@ class Visualize extends StatelessWidget {
 
                           case 'soilMoisture':
                             return PointsLineChart(
-                              title: 'Last 20 Soil Moisture Values',
+                              title: 'Last ${countDataPoint} Soil Moisture Values',
                               yParameter: 'Soil Moisture %',
                               xValues: lstSoilMoisture,
                               yValues: lstTime,
@@ -129,7 +142,7 @@ class Visualize extends StatelessWidget {
 
                           case 'pump':
                             return PointsLineChart(
-                              title: 'Last 20 Pump Values',
+                              title: 'Last ${countDataPoint} Pump Values',
                               yParameter: 'Pump',
                               xValues: lstPump,
                               yValues: lstTime,
@@ -139,14 +152,14 @@ class Visualize extends StatelessWidget {
 
                           case 'pump_pie':
                             return PieChart(
-                              title: 'Last 20 Pump Values',
+                              title: 'Last ${countDataPoint} Pump Values',
                               dict: pumpDict,
                             );
                             break;
 
                           case 'rooftop':
                             return PointsLineChart(
-                              title: 'Last 20 Rooftop Values',
+                              title: 'Last ${countDataPoint} Rooftop Values',
                               yParameter: 'Rooftop',
                               xValues: lstRooftop,
                               yValues: lstTime,
@@ -156,7 +169,7 @@ class Visualize extends StatelessWidget {
 
                           case 'rooftop_pie':
                             return PieChart(
-                              title: 'Last 20 Rooftop Values',
+                              title: 'Last ${countDataPoint} Rooftop Values',
                               dict: rooftopDict,
                             );
                             break;
@@ -172,6 +185,7 @@ class Visualize extends StatelessWidget {
                               ),
                             );
                             break;
+                            
                         }
                       } else {
                         return Loading();

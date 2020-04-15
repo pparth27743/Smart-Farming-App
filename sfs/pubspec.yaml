@@ -41,6 +41,8 @@ dependencies:
   firebase_ml_vision: ^0.9.3+8
   http: ^0.12.0+4
   path_provider: ^1.6.5
+  flutter_launcher_icons: ^0.7.0
+
    
  
 
@@ -52,6 +54,14 @@ dev_dependencies:
   camera: ^0.5.7+4
   path_provider: ^1.6.5
 
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/sfs.png"
+  adaptive_icon_background: "assets/sfs.png"
+  adaptive_icon_foreground: "assets/sfs.png"
 
 
 # For information on the generic Dart part of this file, see the

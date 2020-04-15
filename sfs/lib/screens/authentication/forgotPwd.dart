@@ -51,7 +51,7 @@ class _SignInState extends State<ForgotPassword> {
                         SizedBox(height: 30.0),
                         Text(
                           msg,
-                          style: TextStyle(color: Colors.blue, fontSize: 20.0),
+                          style: TextStyle(color: Colors.indigo, fontSize: 22.0),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 10.0),
@@ -88,11 +88,11 @@ class _SignInState extends State<ForgotPassword> {
                           error,
                           style: TextStyle(color: Colors.red, fontSize: 14.0),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 00),
                         FlatButton(
                           child: Text(
-                            'Return to Sign In',
-                            style: TextStyle(fontSize: 15),
+                            'Return to Sign In?',
+                            style: TextStyle(fontSize: 17),
                           ),
                           onPressed: widget.showResetPwdView,
                         ),

@@ -4,6 +4,9 @@ import 'package:sfs/models/user.dart';
 import 'package:sfs/screens/home/visualize/visualize.dart';
 import 'package:sfs/services/authService.dart';
 
+List<int> values = [5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100];
+int countDataPoint;
+
 class VisualizePage extends StatefulWidget {
   @override
   _VisualizePageState createState() => _VisualizePageState();
@@ -15,7 +18,7 @@ Future navigateToSubPage(context, String visualizeDataOf) async {
     MaterialPageRoute(builder: (context) {
       return StreamProvider<User>.value(
         value: AuthService().user,
-        child: Visualize(visualizeDataOf),
+        child: Visualize(visualizeDataOf: visualizeDataOf, countDataPoint: countDataPoint),
       );
     }),
   );
@@ -32,7 +35,32 @@ class _VisualizePageState extends State<VisualizePage> {
         ),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 20.0),
+            Text(
+              'How many Enrties do you want to visulaize?',
+              style: TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            DropdownButtonFormField(
+              value: countDataPoint ?? 10,
+              items: values.map((val) {
+                return DropdownMenuItem(
+                  value: val,
+                  child: Text(
+                    '$val',
+                    style: TextStyle(
+                      color: Colors.blueGrey,
+                      fontSize: 18,
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (val) => setState(() {
+                countDataPoint = val;
+              }),
+            ),
+            SizedBox(height: 30.0),
             SizedBox(
               height: 40,
               width: double.infinity,

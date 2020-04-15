@@ -29,14 +29,13 @@ class AuthService {
   }
 
   // register with email
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future register(User usr, String password) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: usr.email, password: password);
       FirebaseUser user = result.user;
-
       // create a blank document for the user with the famerid
-      await DatabaseService(farmerid: user.uid).updateUserData(email);
+      await DatabaseService(farmerid: user.uid).updateUserData(usr);
 
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -44,7 +43,7 @@ class AuthService {
       return null;
     }
   }
-  
+
   //sign out
   Future signOut() async {
     try {
