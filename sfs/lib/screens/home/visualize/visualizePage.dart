@@ -43,7 +43,7 @@ class _VisualizePageState extends State<VisualizePage> {
                   fontWeight: FontWeight.bold),
             ),
             DropdownButtonFormField(
-              value: countDataPoint ?? 10,
+              value: countDataPoint ?? 25,
               items: values.map((val) {
                 return DropdownMenuItem(
                   value: val,

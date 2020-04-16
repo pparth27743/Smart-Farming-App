@@ -71,7 +71,7 @@ class _AccountState extends State<Account> {
                           SizedBox(height: 20.0),
                           Text(
                             'Full Name' +
-                                '                                       ',
+                                '                                                                                                                                                                                                                                          ',
                             style:
                                 TextStyle(color: Colors.blueGrey, fontSize: 20),
                           ),
@@ -87,7 +87,7 @@ class _AccountState extends State<Account> {
                           SizedBox(height: 10),
                           Text(
                             'Email' +
-                                '                                                   ',
+                                '                                                                                                                                                                                                                                                      ',
                             style:
                                 TextStyle(color: Colors.blueGrey, fontSize: 20),
                           ),
@@ -106,7 +106,7 @@ class _AccountState extends State<Account> {
                           Row(
                             children: <Widget>[
                               Text(
-                                'Date of Birth' + '                          ',
+                                'Date of Birth' + '                         ',
                                 style: TextStyle(
                                     color: Colors.blueGrey, fontSize: 20),
                               ),
@@ -149,7 +149,7 @@ class _AccountState extends State<Account> {
                           SizedBox(height: 20),
                           Text(
                             'Gender' +
-                                '                                                   ',
+                                '                                                                                                                                                                                                                                                      ',
                             style:
                                 TextStyle(color: Colors.blueGrey, fontSize: 20),
                           ),
