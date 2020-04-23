@@ -1,13 +1,9 @@
 from bottle import route, run, response, request
-import bottle
-import jsonpickle
-import pickle, joblib
+import joblib
 import numpy as np
 import cv2   
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 from keras.preprocessing.image import img_to_array
-from keras import backend as K
+# from keras import backend as K
 from json import dumps
 
 file_object = open('cnn_model.pkl', 'rb')
