@@ -163,11 +163,13 @@ class _UploaderState extends State<Uploader> {
 
   StorageUploadTask _uploadTask;
 
-  void _startUpload(String name) {
-    fileName = name;
-    String filepath = 'farmers/${user.farmerId}/Leaves/${name}.jpg';
+  void _startUpload(bool isUploadable, String name) {
     setState(() {
-      _uploadTask = _storage.ref().child(filepath).putFile(widget.file);
+      fileName = name;
+      if (isUploadable) {
+        String filepath = 'farmers/${user.farmerId}/Leaves/${name}.jpg';
+        _uploadTask = _storage.ref().child(filepath).putFile(widget.file);
+      }
     });
   }
 
@@ -217,10 +219,18 @@ class _UploaderState extends State<Uploader> {
             var response = await http.post(baseUrl, body: img64);
             // print('Response status: ${response.statusCode}');
             // print('Response body: ${json.decode(response.body)['prediction']}');
-            _startUpload(json.decode(response.body)['prediction']);
+
+            String name = json.decode(response.body)['prediction'];
+            if (name != null) {
+              print("--->>> ${name}");
+              _startUpload(true, name);
+            } else {
+              print("--->>> ${name}");
+              _startUpload(false, 'Server is not available');
+            }
           } catch (e) {
             print('There is some Problem');
-            _startUpload(DateTime.now().toString());
+            _startUpload(false, DateTime.now().toString());
           }
         },
       ));

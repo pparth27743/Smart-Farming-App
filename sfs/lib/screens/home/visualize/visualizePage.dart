@@ -5,7 +5,7 @@ import 'package:sfs/screens/home/visualize/visualize.dart';
 import 'package:sfs/services/authService.dart';
 
 List<int> values = [5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100];
-int countDataPoint;
+int countDataPoint = 25;
 
 class VisualizePage extends StatefulWidget {
   @override
@@ -43,7 +43,7 @@ class _VisualizePageState extends State<VisualizePage> {
                   fontWeight: FontWeight.bold),
             ),
             DropdownButtonFormField(
-              value: countDataPoint ?? 25,
+              value: countDataPoint,
               items: values.map((val) {
                 return DropdownMenuItem(
                   value: val,

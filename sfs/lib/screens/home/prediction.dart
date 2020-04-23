@@ -104,6 +104,7 @@ class _PredictionState extends State<Prediction> {
                                   'humidity': humi.toString()
                                 }),
                                 headers: {'content-type': 'application/json'});
+                         
                             print('Response status: ${response.statusCode}');
                             print(
                                 'Response body: ${json.decode(response.body)['prediction']}');
