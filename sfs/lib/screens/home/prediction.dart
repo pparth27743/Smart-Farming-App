@@ -6,7 +6,9 @@ import 'package:sfs/shared/constant.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = "http://192.168.43.114:6000";
+// const baseUrl = "http://192.168.43.114:6000";
+// const baseUrl = "http://3.220.183.2:6000";
+const baseUrl = "http://54.209.180.202:6000";
 
 class Prediction extends StatefulWidget {
   final Function toggleView;

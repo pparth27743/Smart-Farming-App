@@ -12,7 +12,8 @@ import 'package:sfs/models/user.dart';
 import 'package:sfs/services/database.dart';
 import 'package:sfs/shared/loading.dart';
 
-const baseUrl = "http://192.168.43.114:5000";
+// const baseUrl = "http://192.168.43.114:5000";
+const baseUrl = "http://54.209.180.202:5000";
 
 User user;
 
